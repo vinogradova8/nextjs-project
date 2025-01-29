@@ -1,15 +1,23 @@
 import Image from "next/image";
 import course from "./course.json"
+import { Lesson } from "./lesson";
 
-export default function Home() {
+async function getAllCourses(): Promise<typeof course> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(course), 1000);
+  });
+}
+
+export default async function Home() {
+	const courses = await getAllCourses();
+	
   return (
     <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
-        <ul>
-          {course.lessons.map((lesson) => (
+        <ul className='text-green-600'>
+          {courses.lessons.map((lesson) => (
             <li key={lesson.name}>
-							<h2>{ lesson.title }</h2>
-							<p>{ lesson.points }</p>
+              <Lesson title={lesson.title} name={lesson.name} />
             </li>
           ))}
         </ul>
